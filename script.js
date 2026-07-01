@@ -5,6 +5,10 @@ const noResults = document.getElementById('no-results');
 const cards = documentGrid.querySelectorAll('.doc-card');
 const totalDocs = cards.length;
 
+// Updates the count dynamically on page load based on the total number of cards!
+docCount.textContent = 'Showing ' + totalDocs + ' of ' + totalDocs + ' documents';
+
+
 searchInput.addEventListener('input', function () {
     const query = this.value.trim().toLowerCase();
     let visibleCount = 0;
