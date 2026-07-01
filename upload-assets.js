@@ -1,10 +1,14 @@
-const fs = require('fs');
-const path = require('path');
-const { put } = require('@vercel/blob');
+// ALWAYS LOAD ENVIRONMENT VARIABLES FIRST!
+
 require('dotenv').config();
 
 // ADD THIS DEBUG LINE:
-console.log('Debug Token:', process.env.BLOB_READ_WRITE_TOKEN ? 'Loaded successfully!' : 'NOT FOUND (Empty)');
+console.log('Token Prefix:', process.env.BLOB_READ_WRITE_TOKEN ? process.env.BLOB_READ_WRITE_TOKEN.substring(0, 15) + '...' : 'NOT FOUND'); 
+
+const fs = require('fs');
+const path = require('path');
+const { put } = require('@vercel/blob');
+
 
 // We point this to your top-level 'Files' directory
 const LOCAL_FILES_DIR = path.join(__dirname, 'Files'); 
@@ -49,7 +53,10 @@ async function uploadAllPdfs() {
             // Upload to Vercel Blob store
             const blob = await put(fileInfo.fileName, fileBuffer, {
                 access: 'public',
-                addRandomSuffix: true // Safeguards files with the same name
+                addRandomSuffix: true, // Safeguards files with the same name
+
+                // Add this line: Explicitly passes the token we loaded!
+                token: process.env.BLOB_READ_WRITE_TOKEN
             });
 
             // Map the filename to its new secure URL
