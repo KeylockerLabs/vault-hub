@@ -60,5 +60,29 @@ async function loadBlobUrls() {
     }
 }
 
+function updateBannerTimestamp() {
+    const timestampElement = document.getElementById('banner-timestamp');
+    
+    if (timestampElement) {
+        const now = new Date();
+        
+        // 1. Format the Date (e.g., "July 7, 2026")
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = now.toLocaleDateString('en-US', dateOptions);
+        
+        // 2. Format the Time (e.g., "04:15 PM")
+        const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: false };
+        const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
+        
+        // 3. Update the text on your page and append the UTC suffix
+        timestampElement.textContent = `${formattedDate} at ${formattedTime} EDT`;
+
+        setInterval(updateBannerTimestamp, 1000);
+    }
+}
+
+// Execute the function when the script loads
+updateBannerTimestamp();
+
 // Start mapping on page load
 loadBlobUrls();
